@@ -1,27 +1,74 @@
-//import liraries
-import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {View, Text, ScrollView, Image, TextInput} from 'react-native';
+import HistoryCard from '../../components/HistoryCard';
+import {styles} from './index.style';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {useDispatch, useSelector} from 'react-redux';
+import {getCurrentUserTransaction} from '../../features/transaction/transaction.Slice';
+import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
+import MenuIcon from 'react-native-vector-icons/Feather';
+import COLORS from '../../constants/colors';
 
-// create a component
-const HistoryPage = () => {
+const HistoryScreen = ({navigation}: any) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCurrentUserTransaction());
+  }, []);
+
+  const {
+    transactionDataLoading,
+    transactionDataSuccess,
+    transactionDataFailed,
+    transactionData,
+  } = useSelector((state: any) => state.transaction);
+
   return (
-    <View style={styles.container}>
-      <Text>HistoryPage</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={{width: '100%', paddingHorizontal: 20}}>
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <View style={{paddingVertical: 20}}>
+            <MenuIcon name="menu" size={20} color="black" />
+          </View>
+        </TouchableOpacity>
+
+        <ScrollView>
+          <View>
+            {transactionDataSuccess ? (
+              transactionData?.data.length > 0 ? (
+                transactionData?.data.map((donation: any, index: number) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={{marginVertical: 10}}
+                    onPress={() => {
+                      navigation.navigate('HistoryDetailsScreen', {
+                        donationData: donation,
+                      });
+                    }}>
+                    {/* <HistoryCard donation={donation} /> */}
+                  </TouchableOpacity>
+                ))
+              ) : (
+                <Text
+                  style={{
+                    color: COLORS.greyColor,
+                    padding: 10,
+                    fontSize: 16,
+                    fontWeight: '500',
+                    fontStyle: 'italic',
+                  }}>
+                  No Campaign History
+                </Text>
+              )
+            ) : (
+              <LoadingComponent size={'large'} loadingColor="#8D8D8D" />
+            )}
+          </View>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 
-// define your styles
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#2c3e50',
-    width: '100%',
-    height: '100%',
-  },
-});
-
-//make this component available to the app
-export default HistoryPage;
+export default HistoryScreen;

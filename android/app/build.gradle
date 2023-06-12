@@ -91,9 +91,9 @@ def reactNativeArchitectures() {
 }
 
 android {
-    ndkVersion rootProject.ext.ndkVersion
+    ndkVersion ndkVersion
+    compileSdk compileSdkVersion
 
-    compileSdkVersion rootProject.ext.compileSdkVersion
 
     namespace "com.legash_patient_app"
     defaultConfig {
@@ -102,6 +102,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        compileSdkVersion rootProject.ext.compileSdkVersion
     }
 
     splits {
@@ -155,6 +156,7 @@ dependencies {
     implementation("com.facebook.react:react-android")
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+    // implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
 
     implementation project(':react-native-vector-icons')
 

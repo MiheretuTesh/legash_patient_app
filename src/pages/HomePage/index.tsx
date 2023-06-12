@@ -1,27 +1,97 @@
-//import liraries
-import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, ScrollView, Keyboard, TextInput} from 'react-native';
+import {styles} from './index.style';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
+import HomeCard from '../../components/HomeCard';
+import CampaignDetails from '../../components/CampaignDetails';
 
-// create a component
-const HomePage = () => {
+import {useDispatch, useSelector} from 'react-redux';
+
+// reducers
+import {getCampaigns} from '../../features/campaign/campaign.Slice';
+
+//Icon
+import MenuIcon from 'react-native-vector-icons/Feather';
+
+const HomePage = ({navigation}: any) => {
+  const dispatch = useDispatch();
+
+  const {
+    campaignsData,
+    campaignsDataLoading,
+    campaignsDataSuccess,
+    campaignsDataFailed,
+    campaignsDataError,
+  } = useSelector((state: any) => state.campaign);
+
+  const titles = [
+    'Help Chala fight Leukemia',
+    'Lung Cancer',
+    'Diagnosed with Leukemia',
+    'Help Eyosias fight Leukemia',
+  ];
+
+  useEffect(() => {
+    dispatch(getCampaigns());
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text>HomePage</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={{width: '100%', paddingHorizontal: 20}}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.openDrawer();
+            Keyboard.dismiss();
+          }}>
+          <View style={{paddingVertical: 20}}>
+            <MenuIcon name="menu" size={20} color="black" />
+          </View>
+        </TouchableOpacity>
+
+        <View
+          style={{
+            marginHorizontal: 10,
+            borderWidth: 1,
+            borderRadius: 30,
+            marginBottom: 10,
+          }}>
+          <TextInput
+            placeholder="Search"
+            placeholderTextColor={'black'}
+            style={{paddingHorizontal: 20, color: 'black'}}
+          />
+        </View>
+        <ScrollView
+          keyboardDismissMode="on-drag"
+          onScrollBeginDrag={() => Keyboard.dismiss()}>
+          <View>
+            {campaignsDataSuccess ? (
+              campaignsData?.campaigns.length !== 0 ? (
+                campaignsData?.campaigns.map((campaign: any, index: number) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('CampaignDetailScreen', {
+                        campaignData: campaign,
+                      });
+                    }}
+                    key={index}
+                    style={{marginVertical: 10}}>
+                    <HomeCard campaign={campaign} title={titles[index]} />
+                  </TouchableOpacity>
+                ))
+              ) : (
+                <Text>No Campaign</Text>
+              )
+            ) : (
+              <LoadingComponent size={'large'} loadingColor="#8D8D8D" />
+            )}
+          </View>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 
-// define your styles
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#2c3e50',
-    width: '100%',
-    height: '100%',
-  },
-});
-
-//make this component available to the app
 export default HomePage;
