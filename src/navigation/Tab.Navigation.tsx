@@ -8,6 +8,8 @@ import {
   ProfileStack,
   LoginStack,
   RegisterStack,
+  AuthHistoryStack,
+  AuthProfileStack,
 } from './Stack.Navigation';
 import COLORS from '../constants/colors';
 
@@ -76,6 +78,80 @@ export const AppTabNavigation = () => {
       <Tab.Screen
         name="ProfileTab"
         component={ProfileStack}
+        options={{
+          headerShown: false,
+          tabBarLabel: ({focused, color}) => (
+            <Text style={{color: focused ? COLORS.green : COLORS.grey}}>
+              Profile
+            </Text>
+          ),
+          tabBarIcon: ({focused, color, size}) => (
+            <ProfileIcon
+              name="account-circle-outline"
+              color={focused ? COLORS.green : COLORS.grey}
+              size={22}
+            />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
+
+export const AuthTabNavigation = () => {
+  return (
+    <Tab.Navigator
+      initialRouteName="HomeTab"
+      screenOptions={{
+        headerShown: false,
+        tabBarHideOnKeyboard: true,
+        tabBarStyle: {
+          position: 'absolute',
+          display: 'flex',
+        },
+      }}>
+      <Tab.Screen
+        name="HomeTab"
+        component={MainStackNavigator}
+        options={{
+          headerShown: false,
+          tabBarLabel: ({focused, color}) => (
+            <Text style={{color: focused ? COLORS.green : COLORS.grey}}>
+              Home
+            </Text>
+          ),
+          tabBarIcon: ({focused, color, size}) => (
+            <HomeIcon
+              name="home"
+              color={focused ? COLORS.green : COLORS.grey}
+              size={22}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="HistoryTab"
+        component={AuthHistoryStack}
+        options={{
+          headerShown: false,
+          tabBarLabel: ({focused, color}) => (
+            <Text style={{color: focused ? COLORS.green : COLORS.grey}}>
+              History
+            </Text>
+          ),
+          tabBarIcon: ({focused, color, size}) => (
+            <HistoryIcon
+              name="history"
+              color={focused ? COLORS.green : COLORS.grey}
+              size={28}
+            />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="ProfileTab"
+        component={AuthProfileStack}
         options={{
           headerShown: false,
           tabBarLabel: ({focused, color}) => (

@@ -1,13 +1,18 @@
 import React, {Component} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {AppDrawer} from './Drawer.Navigation';
+import {AppDrawer, AuthDrawer} from './Drawer.Navigation';
+import {useSelector} from 'react-redux';
 
-const AppNavigation = () => {
-  // const {isLoading, error, token} = useQuery('erer', getToken);
+const AppNavigation = ({token}: any) => {
+  const {isLoginSuccess} = useSelector((state: any) => state.auth);
 
   return (
     <NavigationContainer>
-      <AppDrawer />
+      {token || isLoginSuccess ? (
+        <AuthDrawer token={token} />
+      ) : (
+        <AppDrawer token={token} isLoginSuccess={isLoginSuccess} />
+      )}
     </NavigationContainer>
   );
 };

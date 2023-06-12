@@ -1,25 +1,25 @@
 //import liraries
 import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, ActivityIndicator} from 'react-native';
+import {styles} from './index.style';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 // create a component
-const SubmittedButton = () => {
+const SubmittedButton = ({btnTitle, isLoading, isError}: any) => {
   return (
     <View style={styles.container}>
-      <Text>SubmittedButton</Text>
+      {/* <TouchableOpacity> */}
+      {isLoading && isError !== true ? (
+        <ActivityIndicator color="#fff" style={styles.btn} />
+      ) : (
+        <Text style={styles.btn}>{btnTitle}</Text>
+      )}
+      {/* </TouchableOpacity> */}
     </View>
   );
 };
 
 // define your styles
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#2c3e50',
-  },
-});
 
 //make this component available to the app
 export default SubmittedButton;

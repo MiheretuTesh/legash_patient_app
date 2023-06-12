@@ -1,27 +1,45 @@
 //import liraries
-import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import ProfileEditForm from '../../components/ProfileEditForm';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {styles} from './index.style';
+import PersonIcon from 'react-native-vector-icons/Fontisto';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import CloseIcon from 'react-native-vector-icons/AntDesign';
+import {useDispatch, useSelector} from 'react-redux';
+import {getCurrentUser} from '../../features/user/user.Slice';
 
 // create a component
-const ProfileEditPage = () => {
+const ProfileEditPage = ({navigation}: any) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCurrentUser());
+  }, []);
+
+  const {userData, userDataLoading, userDataSuccess, userDataFailed} =
+    useSelector((state: any) => state.user);
+
   return (
-    <View style={styles.container}>
-      <Text>ProfileEditPage</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View
+        style={{
+          paddingVertical: 15,
+          paddingHorizontal: 20,
+        }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <CloseIcon name="close" size={20} color={'white'} />
+        </TouchableOpacity>
+      </View>
+      <ScrollView>
+        <ProfileEditForm
+          userDataLoading={userDataSuccess}
+          userData={userData}
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
-// define your styles
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#2c3e50',
-    width: '100%',
-    height: '100%',
-  },
-});
-
-//make this component available to the app
 export default ProfileEditPage;
