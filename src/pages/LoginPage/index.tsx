@@ -32,12 +32,11 @@ const LoginPage = ({navigation}: any) => {
         .auth()
         .signInWithEmailAndPassword(email, password);
 
-      if (!userCredential?.user.emailVerified) {
-        console.log("User not registered or Didn't verify email");
-        setEmailNotVerified(true);
-      } else {
+      // if (!userCredential?.user.emailVerified) {
+        // setEmailNotVerified(true);
+      // } else {
         dispatch(loginUser(userCredential.user.uid));
-      }
+      // }
     } catch (error) {
       console.log('Sign-in error:', error);
     }

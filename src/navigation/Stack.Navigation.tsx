@@ -11,10 +11,29 @@ import RegistrationPage from '../pages/RegistrationPage';
 import CampaignDetailsPage from '../pages/CampaignDetail';
 import ProfileScreenLanding from '../pages/ProfileScreenLanding';
 import HistoryScreenLanding from '../pages/HistoryScreenLanding';
+import HomePageLanding from '../pages/HomePageLanding';
 
 const Stack = createStackNavigator();
 
 export const MainStackNavigator = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        headerTintColor: 'white',
+        headerBackTitle: 'Back',
+      }}>
+      <Stack.Screen name="HomeScreen" component={HomePageLanding} />
+      <Stack.Screen
+        name="CampaignDetailScreen"
+        component={CampaignDetailsPage}
+      />
+      <Stack.Screen name="LoginScreen" component={LoginPage} />
+    </Stack.Navigator>
+  );
+};
+
+export const AuthMainStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -27,6 +46,7 @@ export const MainStackNavigator = () => {
         name="CampaignDetailScreen"
         component={CampaignDetailsPage}
       />
+      <Stack.Screen name="LoginScreen" component={LoginPage} />
     </Stack.Navigator>
   );
 };

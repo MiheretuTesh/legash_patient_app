@@ -8,12 +8,14 @@ const HomeCard = ({campaign, title}) => {
     <View style={styles.container}>
       <Image
         source={{
-          uri: campaign.coverImage ? campaign.coverImage : '',
+          uri: campaign?.data.coverImage ? campaign?.data.coverImage : '',
         }}
         style={styles.historyCardImg}
       />
       <View style={styles.historyCardContent}>
-        <Text style={styles.historyCardHeroTxt}>{title}</Text>
+        <Text style={styles.historyCardHeroTxt}>
+          {campaign?.data.campaignTitle}
+        </Text>
         <View style={styles.progressContainer}>
           <View
             style={{
@@ -26,7 +28,9 @@ const HomeCard = ({campaign, title}) => {
             <View
               style={{
                 width: `${Math.round(
-                  (campaign.currentFundedAmount / campaign.targetFunding) * 100,
+                  (campaign?.data.currentFundedAmount /
+                    campaign?.data.targetFunding) *
+                    100,
                 )}%`,
                 height: 5,
                 backgroundColor: COLORS.mainColor,
@@ -47,7 +51,9 @@ const HomeCard = ({campaign, title}) => {
           <View>
             <Text style={{color: '#333'}}>
               {Math.round(
-                (campaign.currentFundedAmount / campaign.targetFunding) * 100,
+                (campaign?.data.currentFundedAmount /
+                  campaign?.data.targetFunding) *
+                  100,
               )}
               %
             </Text>
@@ -57,14 +63,14 @@ const HomeCard = ({campaign, title}) => {
           <View>
             <Text style={styles.cardFooterTitle}>Target</Text>
             <Text style={styles.cardFooterAmountActive}>
-              {campaign.targetFunding.toLocaleString('en-US')}
+              {campaign?.data.targetFunding?.toLocaleString('en-US')}
             </Text>
           </View>
           <View style={styles.separator}></View>
           <View>
             <Text style={styles.cardFooterTitle}>Raised</Text>
             <Text style={styles.cardFooterAmountActive}>
-              {campaign.currentFundedAmount.toLocaleString('en-US')} birr
+              {campaign?.data.currentFundedAmount?.toLocaleString('en-US')} birr
             </Text>
           </View>
           <View style={styles.separator}></View>
@@ -72,7 +78,8 @@ const HomeCard = ({campaign, title}) => {
             <Text style={styles.cardFooterTitle}>To Go</Text>
             <Text style={styles.cardFooterAmountInActive}>
               {(
-                campaign.targetFunding - campaign.currentFundedAmount
+                campaign?.data.targetFunding -
+                campaign?.data.currentFundedAmount
               ).toLocaleString('en-US')}
               birr
             </Text>

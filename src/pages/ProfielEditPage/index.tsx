@@ -21,6 +21,10 @@ const ProfileEditPage = ({navigation}: any) => {
   const {userData, userDataLoading, userDataSuccess, userDataFailed} =
     useSelector((state: any) => state.user);
 
+  const handleUpdateNavigation = () => {
+    navigation.navigate('Home');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -36,6 +40,7 @@ const ProfileEditPage = ({navigation}: any) => {
         <ProfileEditForm
           userDataLoading={userDataSuccess}
           userData={userData}
+          handleUpdateNavigation={handleUpdateNavigation}
         />
       </ScrollView>
     </SafeAreaView>

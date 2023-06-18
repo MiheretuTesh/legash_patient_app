@@ -10,6 +10,7 @@ import {
   RegisterStack,
   AuthHistoryStack,
   AuthProfileStack,
+  AuthMainStackNavigator,
 } from './Stack.Navigation';
 import COLORS from '../constants/colors';
 
@@ -27,7 +28,7 @@ const Tab = createBottomTabNavigator();
 export const AppTabNavigation = () => {
   return (
     <Tab.Navigator
-      initialRouteName="HomeTab"
+      // initialRouteName="HomeTab"
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,
@@ -55,7 +56,8 @@ export const AppTabNavigation = () => {
           ),
         }}
       />
-      <Tab.Screen
+
+      {/* <Tab.Screen
         name="HistoryTab"
         component={HistoryStack}
         options={{
@@ -73,7 +75,7 @@ export const AppTabNavigation = () => {
             />
           ),
         }}
-      />
+      /> */}
 
       <Tab.Screen
         name="ProfileTab"
@@ -112,7 +114,7 @@ export const AuthTabNavigation = () => {
       }}>
       <Tab.Screen
         name="HomeTab"
-        component={MainStackNavigator}
+        component={AuthMainStackNavigator}
         options={{
           headerShown: false,
           tabBarLabel: ({focused, color}) => (
@@ -129,7 +131,7 @@ export const AuthTabNavigation = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="HistoryTab"
         component={AuthHistoryStack}
         options={{
@@ -147,7 +149,7 @@ export const AuthTabNavigation = () => {
             />
           ),
         }}
-      />
+      /> */}
 
       <Tab.Screen
         name="ProfileTab"

@@ -49,7 +49,6 @@ const RegistrationPage = ({navigation}: any) => {
 
   useEffect(() => {
     if (isRegisterSuccess) {
-      console.log('Hello');
       navigation.navigate('Login');
     }
   }, [registerData, isRegisterSuccess]);

@@ -5,6 +5,7 @@ import SubmittedButton from '../SubmittedButton';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import COLORS from '../../constants/colors';
 import * as Yup from 'yup';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
@@ -12,7 +13,7 @@ const validationSchema = Yup.object().shape({
     .min(6, 'Password must be at least 6 characters')
     .required('Password is required'),
 });
-// create a component
+
 const LoginForm = ({
   isSuccess,
   handleFormSubmit,
@@ -24,6 +25,7 @@ const LoginForm = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async () => {
     const formData = {
@@ -66,13 +68,38 @@ const LoginForm = ({
 
         <View>
           <Text style={styles.labelTxt}>Password</Text>
-          <View style={styles.inputFieldContainer}>
+          <View
+            style={{
+              backgroundColor: '#F7F7F7',
+              borderRadius: 8,
+              borderWidth: 1,
+              borderColor: COLORS.mainColor,
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignContent: 'center',
+            }}>
             <TextInput
               name="password"
-              style={styles.input}
+              style={{
+                width: '80%',
+                color: COLORS.txtColor,
+                paddingTop: 5,
+                paddingBottom: 5,
+              }}
               value={password}
               onChangeText={value => setPassword(value)}
+              secureTextEntry={!showPassword}
             />
+            <Pressable
+              onPress={() => setShowPassword(!showPassword)}
+              style={{padding: 10}}>
+              <Icon
+                name={showPassword ? 'eye-slash' : 'eye'}
+                size={20}
+                color={showPassword ? 'grey' : 'black'}
+              />
+            </Pressable>
           </View>
           {errors.password && (
             <Text style={{color: 'red'}}>{errors.password}</Text>
@@ -93,16 +120,7 @@ const LoginForm = ({
           )}
         </View>
 
-        <TouchableOpacity
-          onPress={() => handleSubmit()}
-          // style={{paddingHorizontal: 50}}
-          style={
-            {
-              // display: 'flex',
-              // justifyContent: 'center',
-              // alignItems: 'center',
-            }
-          }>
+        <TouchableOpacity onPress={handleSubmit}>
           <SubmittedButton
             btnTitle={'Sign In'}
             handleFormSubmit={handleFormSubmit}
@@ -111,7 +129,9 @@ const LoginForm = ({
           />
         </TouchableOpacity>
         <View style={{flex: 1, flexDirection: 'row', paddingVertical: 10}}>
-          <Text style={{color: COLORS.txtColor}}>I don't have account! </Text>
+          <Text style={{color: COLORS.txtColor}}>
+            I don't have an account!{' '}
+          </Text>
 
           <Pressable onPress={handleNavigateToLogin}>
             <Text style={{color: COLORS.mainColor, fontWeight: '500'}}>

@@ -36,7 +36,7 @@ const HistoryScreen = ({navigation}: any) => {
         <ScrollView>
           <View>
             {transactionDataSuccess ? (
-              transactionData?.data.length > 0 ? (
+              transactionData?.data?.length > 0 ? (
                 transactionData?.data.map((donation: any, index: number) => (
                   <TouchableOpacity
                     key={index}
