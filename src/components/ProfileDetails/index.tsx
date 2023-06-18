@@ -86,8 +86,8 @@ const PersonalDetails = ({
         </View>
 
         <View style={styles.bottomContainer}>
-          <View style={{flexDirection: 'column'}}>
-            <View
+          <View style={{flexDirection: 'column', paddingTop: 50}}>
+            {/* <View
               style={{
                 width: '100%',
                 flexDirection: 'row',
@@ -156,8 +156,8 @@ const PersonalDetails = ({
                   Notification
                 </Text>
               </View>
-            </View>
-            <View
+            </View> */}
+            {/* <View
               style={{
                 width: '100%',
                 flexDirection: 'row',
@@ -195,6 +195,44 @@ const PersonalDetails = ({
                   Setting
                 </Text>
               </View>
+              <View
+                style={{
+                  borderColor: COLORS.mainColor,
+                  borderWidth: 1,
+                  width: 130,
+                  height: 130,
+                  borderRadius: 20,
+                  elevation: 10,
+                  backgroundColor: 'white',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: 10,
+                }}>
+                <CommentIcon
+                  name="comment-account-outline"
+                  size={50}
+                  color={COLORS.mainColor}
+                />
+                <Text
+                  style={{
+                    color: COLORS.mainColor,
+                    fontSize: 16,
+                    fontWeight: '500',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  Comments
+                </Text>
+              </View>
+            </View> */}
+            <View
+              style={{
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+              }}>
               <TouchableOpacity
                 onPress={handleProfileEditNavigation}
                 style={{
@@ -231,44 +269,6 @@ const PersonalDetails = ({
                   </Text>
                 </View>
               </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-              }}>
-              <View
-                style={{
-                  borderColor: COLORS.mainColor,
-                  borderWidth: 1,
-                  width: 130,
-                  height: 130,
-                  borderRadius: 20,
-                  elevation: 10,
-                  backgroundColor: 'white',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  padding: 10,
-                }}>
-                <CommentIcon
-                  name="comment-account-outline"
-                  size={50}
-                  color={COLORS.mainColor}
-                />
-                <Text
-                  style={{
-                    color: COLORS.mainColor,
-                    fontSize: 16,
-                    fontWeight: '500',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  Comments
-                </Text>
-              </View>
               <TouchableOpacity
                 onPress={handleLogout}
                 style={{

@@ -50,15 +50,49 @@ export const getUser = createAsyncThunk('/user', async (id, thunkAPI) => {
   }
 });
 
+export const getUserEn = createAsyncThunk('/user', async (id, thunkAPI) => {
+  try {
+    const token = await getToken();
+
+    const {data} = await axios.get(`${config.BASE_URI}/users/${id}`, {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : null,
+      },
+    });
+
+    return data;
+  } catch (err) {
+    return thunkAPI.rejectWithValue(err.response.data);
+  }
+});
+
+export const getUserAm = createAsyncThunk('/user', async (id, thunkAPI) => {
+  try {
+    const token = await getToken();
+
+    const {data} = await axios.get(`${config.BASE_URI}/users/${id}`, {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : null,
+        'Accept-Language': 'am_et',
+      },
+    });
+
+    return data;
+  } catch (err) {
+    return thunkAPI.rejectWithValue(err.response.data);
+  }
+});
+
 export const editUser = createAsyncThunk(
   '/user',
-  async (formData, thunkAPI) => {
-    console.log(formData, 'HEY');
+  async ({formData: formData, id: id}, thunkAPI) => {
     try {
       const token = await getToken();
 
+      console.log(formData, 'formData formData formData');
+
       const {data} = await axios.patch(
-        `${config.BASE_URI}/users/${formData.id}`,
+        `${config.BASE_URI}/users/${id}`,
         formData,
         {
           headers: {
@@ -66,10 +100,9 @@ export const editUser = createAsyncThunk(
           },
         },
       );
-
       return data;
     } catch (err) {
-      console.log(err, 'User Error');
+      console.log('Error occurred during user edit:', err);
       return thunkAPI.rejectWithValue(err.response.data);
     }
   },
@@ -92,6 +125,16 @@ const initialState = {
   editUserFailed: false,
 
   userDataError: '',
+
+  userDataAm: {},
+  userDataAmLoading: false,
+  userDataAmSuccess: false,
+  userDataAmFailed: false,
+
+  userDataEn: {},
+  userDataEnLoading: false,
+  userDataEnSuccess: false,
+  userDataEnFailed: false,
 };
 
 const userSlice = createSlice({
@@ -160,6 +203,38 @@ const userSlice = createSlice({
       state.editUserLoading = false;
       state.editUserSuccess = false;
       state.editUserFailed = true;
+    },
+
+    [getUserAm.pending]: state => {
+      state.userDataAmLoading = true;
+      state.userDataAmSuccess = false;
+    },
+    [getUserAm.fulfilled]: (state, {payload}) => {
+      state.userDataAmFailed = false;
+      state.userDataAmSuccess = true;
+      state.userDataAmFailed = false;
+      state.userDataAm = payload.data;
+    },
+    [getUserAm.rejected]: (state, {payload}) => {
+      state.userDataAmLoading = false;
+      state.userDataAmSuccess = false;
+      state.userDataAmFailed = true;
+    },
+
+    [getUserEn.pending]: state => {
+      state.userDataEnLoading = true;
+      state.userDataEnSuccess = false;
+    },
+    [getUserEn.fulfilled]: (state, {payload}) => {
+      state.userDataEnLoading = false;
+      state.userDataEnSuccess = true;
+      state.userDataEnFailed = false;
+      state.userDataEn = payload;
+    },
+    [getUserEn.rejected]: (state, {payload}) => {
+      state.userDataEnLoading = false;
+      state.userDataEnSuccess = false;
+      state.userDataEnFailed = true;
     },
   },
 });

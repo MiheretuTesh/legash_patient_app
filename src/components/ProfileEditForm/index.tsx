@@ -1,4 +1,3 @@
-//import liraries
 import React, {useEffect, useState} from 'react';
 import {View, Text, TextInput} from 'react-native';
 import {styles} from './index.style';
@@ -9,8 +8,13 @@ import SubmittedButton from '../SubmittedButton';
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import {editUser} from '../../features/user/user.Slice';
 import {useSelector, useDispatch} from 'react-redux';
+import {Picker} from '@react-native-picker/picker';
 
-const ProfileEdit = ({userDataLoading, userData}: any) => {
+const ProfileEdit = ({
+  userDataLoading,
+  userData,
+  handleUpdateNavigation,
+}: any) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -18,7 +22,9 @@ const ProfileEdit = ({userDataLoading, userData}: any) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [accountNumber, setAccountNumber] = useState('1000255321345');
   const [gender, setGender] = useState('');
+  const [bankName, setBankName] = useState('CBE');
 
   const {editUserLoading, editUserSuccess, editUserFailed} = useSelector(
     (state: any) => state.user,
@@ -45,38 +51,6 @@ const ProfileEdit = ({userDataLoading, userData}: any) => {
       });
   }, [navigation, userData]);
 
-  const showToast = txt => {
-    // Logic to show the toast
-    console.log('Toast shown');
-  };
-
-  const handleToastHidden = () => {
-    // Logic to handle the toast being hidden
-    console.log('Toast hidden');
-  };
-
-  // const showToast = (title) => {
-  //   toast.show({
-  //     type: 'success',
-  //     position: 'bottom',
-  //     text1: 'Success',
-  //     text2: title,
-  //     visibilityTime: 3000,
-  //     topOffset: 30,
-  //     bottomOffset: 40,
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   if (editUserSuccess === true) {
-  //     showToast('Successfully Edited');
-  //   }
-
-  //   if (editUserFailed === true) {
-  //     showToast('Failed to Edit');
-  //   }
-  // }, [editUserSuccess, editUserFailed]);
-
   const handleEditUserProfile = () => {
     const userName = name.split(' ');
 
@@ -84,15 +58,37 @@ const ProfileEdit = ({userDataLoading, userData}: any) => {
     const lastName = userName[1];
 
     const formData = {
-      id: id,
-      firstName: firstName,
-      lastName: lastName,
+      am_et: {
+        firstName: 'አበራ',
+        lastName: 'ሀብታሙ',
+        bankAccounts: [
+          {
+            accountHolderName: 'አበራ ሀብታሙ',
+            accountNumber: accountNumber,
+            bankName: 'ንግድ ባንክ',
+            country: 'ኢትዮጵያ',
+          },
+        ],
+        gender: 'ሴት',
+      },
+      en_us: {
+        firstName: `${firstName}`,
+        lastName: `${lastName}`,
+        bankAccounts: [
+          {
+            accountHolderName: `${firstName} ${lastName}`,
+            accountNumber: accountNumber,
+            bankName: bankName,
+            country: 'Ethiopia',
+          },
+        ],
+        gender: 'Female',
+      },
       email: email,
       phonenumber: phone,
-      gender: gender,
     };
 
-    dispatch(editUser(formData));
+    dispatch(editUser({formData: formData, id: userData._id}));
   };
 
   return (
@@ -207,15 +203,49 @@ const ProfileEdit = ({userDataLoading, userData}: any) => {
                 <View style={{width: 10}}></View>
 
                 <View style={styles.inputFieldContainer}>
+                  <Picker
+                    selectedValue={gender}
+                    onValueChange={setGender}
+                    style={styles.input}>
+                    <Picker.Item label="Male" value="male" />
+                    <Picker.Item label="Female" value="female" />
+                  </Picker>
+                </View>
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.labelTxt}>Bank Name</Text>
+                <View style={{width: 10}}></View>
+
+                <View style={styles.inputFieldContainer}>
+                  <Picker
+                    selectedValue={bankName}
+                    onValueChange={setBankName}
+                    style={styles.input}>
+                    <Picker.Item label="CBE" value="CBE" />
+                    <Picker.Item label="COOP" value="COOP" />
+                    <Picker.Item label="Birhane" value="Birhane" />
+                    <Picker.Item label="Abyssinia" value="Abyssinia" />
+                  </Picker>
+                </View>
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.labelTxt}>Acc. Number</Text>
+                <View style={{width: 10}}></View>
+
+                <View style={styles.inputFieldContainer}>
                   <TextInput
                     style={styles.input}
-                    value={gender}
-                    onChangeText={setGender} // Set the gender using setGender function
+                    value={accountNumber}
+                    onChangeText={setAccountNumber}
                   />
                 </View>
               </View>
               <TouchableOpacity
-                onPress={handleEditUserProfile}
+                onPress={() => {
+                  handleEditUserProfile();
+                  handleUpdateNavigation();
+                }}
                 style={{paddingHorizontal: 65}}>
                 <SubmittedButton
                   btnTitle={'Update'}

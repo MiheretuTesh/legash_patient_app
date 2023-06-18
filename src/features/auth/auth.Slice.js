@@ -12,7 +12,6 @@ export const signUpUser = createAsyncThunk(
   'user/singUpUser',
   async (formData, thunkAPI) => {
     try {
-      console.log(formData, 'formData formData');
       const response = await axios.post(
         `${config.BASE_URI}/auth/signup`,
         formData,
@@ -20,7 +19,6 @@ export const signUpUser = createAsyncThunk(
 
       return response;
     } catch (err) {
-      console.log(err, 'err err err');
       return thunkAPI.rejectWithValue(err.response.data);
     }
   },
@@ -30,15 +28,13 @@ export const loginUser = createAsyncThunk(
   'user/loginUser',
   async (uid, thunkAPI) => {
     try {
-      console.log(uid, 'uid uid uid');
       const {data} = await axios.post(`${config.BASE_URI}/auth/login`, {
-        uid: 'zG7DFkmxjidQzVXXzf2MdBi2SD22',
+        uid: uid,
       });
       saveToken(data?.token);
       // storeAdmin(data?.role.roleName);
       return data;
     } catch (err) {
-      console.log('Error Occurring', err);
       return thunkAPI.rejectWithValue(err.response.data);
     }
   },
@@ -97,6 +93,11 @@ const initialState = {
   isLogoutFetching: false,
   isLogoutSuccess: false,
   isLogoutFailed: false,
+
+  currentUserData: {},
+  isCurrentUserFetching: false,
+  isCurrentUserSuccess: false,
+  isCurrentUserFailed: false,
 };
 
 const authSlice = createSlice({
@@ -140,22 +141,20 @@ const authSlice = createSlice({
     },
 
     [getCurrentUser.pending]: state => {
-      state.isLoginFetching = true;
-      state.isLoginError = false;
-      state.loginErrorMessage = '';
+      state.isCurrentUserFetching = true;
+      state.isCurrentUserSuccess = false;
+      state.isCurrentUserFailed = '';
     },
     [getCurrentUser.fulfilled]: (state, {payload}) => {
-      state.isLoginFetching = false;
-      state.isLoginSuccess = true;
-      state.isLoginError = false;
-      state.loginErrorMessage = '';
-      state.loginData = payload.user;
-      state.token = payload.token;
-      state.isAdminValue = payload.isAdmin;
+      state.isCurrentUserFetching = false;
+      state.isCurrentUserSuccess = true;
+      state.isCurrentUserFailed = false;
+      state.currentUserData = payload;
     },
     [getCurrentUser.rejected]: (state, {payload}) => {
-      state.isLoginFetching = false;
-      state.isLoginError = true;
+      state.isCurrentUserFetching = false;
+      state.isCurrentUserSuccess = false;
+      state.isCurrentUserFailed = true;
       state.loginErrorMessage = payload;
     },
 

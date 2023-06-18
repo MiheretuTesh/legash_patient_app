@@ -38,12 +38,24 @@ const CampaignDetails = ({campaignData}: any) => {
       <View>
         <ImageBackground
           source={{
-            uri: 'https://images.unsplash.com/photo-1548102245-c79dbcfa9f92?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=996&q=80',
+            uri: campaignData?.data.coverImage
+              ? campaignData?.data.coverImage
+              : '',
           }}
           style={styles.backgroundImg}
           imageStyle={{borderRadius: 15}}
         />
       </View>
+      <Text
+        style={{
+          color: COLORS.txtColor,
+          fontSize: 20,
+          fontWeight: '600',
+          paddingVertical: 20,
+          paddingHorizontal: 5,
+        }}>
+        {campaignData?.data.campaignTitle}
+      </Text>
       <Text style={styles.heroTxt}>Campaign Status</Text>
 
       <View style={{paddingHorizontal: 10}}>
@@ -77,7 +89,7 @@ const CampaignDetails = ({campaignData}: any) => {
                 paddingTop: 10,
                 paddingLeft: 10,
               }}>
-              10,000 Birr
+              {campaignData?.data.targetFunding?.toLocaleString('en-US')}
             </Text>
           </View>
           <View
@@ -109,7 +121,7 @@ const CampaignDetails = ({campaignData}: any) => {
                 paddingTop: 10,
                 paddingLeft: 5,
               }}>
-              10,000 Birr
+              {campaignData?.data.currentFundedAmount?.toLocaleString('en-US')}
             </Text>
           </View>
           <View
@@ -141,7 +153,11 @@ const CampaignDetails = ({campaignData}: any) => {
                 paddingTop: 10,
                 paddingLeft: 5,
               }}>
-              10,000 Birr
+              {(
+                campaignData?.data.targetFunding -
+                campaignData?.data.currentFundedAmount
+              ).toLocaleString('en-US')}
+              birr
             </Text>
           </View>
         </View>
@@ -163,10 +179,7 @@ const CampaignDetails = ({campaignData}: any) => {
               fontWeight: '300', // Changed to string value
               paddingTop: 10,
             }}>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis
-            assumenda autem vel provident excepturi vero ipsam tempora
-            blanditiis veniam. Animi ut ex obcaecati quod iste iusto expedita,
-            quaerat distinctio velit!
+            {campaignData?.data.campaignDescription}
           </Text>
         </View>
       </View>

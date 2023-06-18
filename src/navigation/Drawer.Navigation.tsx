@@ -60,7 +60,7 @@ export const AuthDrawer = ({token}: any) => {
 export const AppDrawer = ({token, isLoginSuccess}: any) => {
   return (
     <Drawer.Navigator
-      initialRouteName="Home"
+      initialRouteName="Login"
       screenOptions={{
         drawerStyle: {
           width: 290,
@@ -85,28 +85,6 @@ export const AppDrawer = ({token, isLoginSuccess}: any) => {
           ),
         }}
       />
-      {/* <Drawer.Screen
-          name="About"
-          component={About}
-          options={{
-            drawerIcon: ({color}) => (
-              <AboutIcon
-                name="md-information-circle-outline"
-                color={color}
-                size={26}
-              />
-            ),
-          }}
-        />
-        <Drawer.Screen
-          name="Contact Us"
-          component={ContactUs}
-          options={{
-            drawerIcon: ({color}) => (
-              <ContactIcon name="contacts" color={color} size={26} />
-            ),
-          }}
-        /> */}
       <Drawer.Screen
         name="Login"
         component={LoginStack}

@@ -26,7 +26,7 @@ const ProfileDetailPage = ({navigation}: any) => {
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    navigation.navigate('HomeTab');
+    navigation.navigate('LoginScreen');
   };
 
   useEffect(() => {
